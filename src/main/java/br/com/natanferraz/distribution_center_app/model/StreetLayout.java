@@ -7,16 +7,15 @@ import java.io.Serializable;
 @Entity
 public class StreetLayout implements Serializable {
     @Serial
-    private static final long serialVersionUID = -1L;
+    private static final long serialVersionUID = -5L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String street;
     private String picking;
     private int level;
-
-    @OneToOne(cascade=CascadeType.PERSIST, fetch = FetchType.LAZY, optional = false)
-
+    @OneToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pallet_id")
     private Pallet pallet;
 
     public Pallet getPallet() {
@@ -27,10 +26,11 @@ public class StreetLayout implements Serializable {
         this.pallet = pallet;
     }
 
-    public StreetLayout(String street, String picking, int level) {
+    public StreetLayout(String street, String picking, int level, Pallet pallet) {
         this.street = street;
         this.picking = picking;
         this.level = level;
+        this.pallet = pallet;
     }
 
     @Deprecated

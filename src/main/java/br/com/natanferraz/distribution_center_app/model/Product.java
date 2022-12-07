@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 public class Product implements Serializable {
     @Serial
-    private static final long serialVersionUID = -5L;
+    private static final long serialVersionUID = -4L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,24 +18,28 @@ public class Product implements Serializable {
     private double weight;
     private Date expirationDate;
     private Date fabricationDate;
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, optional = false)
-    private Dimension dimension;
+    private double length;
+    private double width;
+    private double height;
     private String batch;
     private int quantity;
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Packing packing;
 
     public Product(String packageProduct, double weight, Date expirationDate,
-                   Date fabricationDate, Dimension dimension, String batch,
+                   Date fabricationDate, double length, double width,
+                   double height, String batch,
                    int quantity, Packing packing) {
         this.packageProduct = packageProduct;
         this.weight = weight;
         this.expirationDate = expirationDate;
         this.fabricationDate = fabricationDate;
-        this.dimension = dimension;
+        this.height = height;
         this.batch = batch;
         this.quantity = quantity;
         this.packing = packing;
+        this.length = length;
+        this.width = width;
     }
     @Deprecated
     public Product(){
@@ -105,16 +109,29 @@ public class Product implements Serializable {
     public void setPacking(Packing packing) {
         this.packing = packing;
     }
-
-    public Dimension getDimension() {
-        return dimension;
+    public double getLength() {
+        return length;
     }
 
-    public void setDimension(Dimension dimension) {
-        this.dimension = dimension;
+    public void setLength(double length) {
+        this.length = length;
     }
 
+    public double getWidth() {
+        return width;
+    }
 
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
     public Long getId() {
         return id;
     }

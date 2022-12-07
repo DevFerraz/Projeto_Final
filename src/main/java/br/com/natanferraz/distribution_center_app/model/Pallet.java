@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Entity
 public class Pallet implements Serializable {
     @Serial
-    private static final long serialVersionUID = -4L;
+    private static final long serialVersionUID = -3L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,44 +15,28 @@ public class Pallet implements Serializable {
 
     private double maxWeight;
     private String status;
+    private double length;
+    private double width;
+    private double height;
+    private double weight;
 
-    @ManyToOne(cascade=CascadeType.PERSIST, fetch = FetchType.LAZY, optional = false)
-    private Dimension dimension;
-
-    @OneToOne(mappedBy="pallet", cascade=CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "street_layout_id")
     private StreetLayout streetLayout;
+
     public Pallet(double maxWeight, String status,
-                  Dimension dimension){
+                  double length, double width, double height,
+                  double weight) {
         this.maxWeight = maxWeight;
         this.status = status;
-        this.dimension = dimension;
+        this.height = height;
+        this.weight = weight;
+        this.length = length;
+        this.width = width;
     }
+
     @Deprecated
     public Pallet() {
-    }
-
-    public StreetLayout getArruamento() {
-        return streetLayout;
-    }
-
-    public void setArruamento(StreetLayout streetLayout) {
-        this.streetLayout = streetLayout;
-    }
-
-    public double getMaxWeight() {
-        return maxWeight;
-    }
-
-    public void setMaxWeight(double pesoMaximo) {
-        this.maxWeight = pesoMaximo;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Long getId() {
@@ -63,12 +47,58 @@ public class Pallet implements Serializable {
         this.id = id;
     }
 
-    public Dimension getDimension() {
-        return dimension;
+    public double getMaxWeight() {
+        return maxWeight;
     }
 
-    public void setDimension(Dimension dimension) {
-        this.dimension = dimension;
+    public void setMaxWeight(double maxWeight) {
+        this.maxWeight = maxWeight;
+    }
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    public StreetLayout getStreetLayout() {
+        return streetLayout;
+    }
+
+    public void setStreetLayout(StreetLayout streetLayout) {
+        this.streetLayout = streetLayout;
     }
 }
 
