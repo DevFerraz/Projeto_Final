@@ -4,7 +4,9 @@ package br.com.natanferraz.distribution_center_app.model;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 public class Product implements Serializable {
@@ -12,18 +14,29 @@ public class Product implements Serializable {
     private static final long serialVersionUID = -4L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
+    @Column(nullable = false, length = 50)
     private String description;
+    @Column(nullable = false, length = 50)
     private String packageProduct;
+    @Column(nullable = false, length = 5)
     private double weight;
+    @Column(nullable = false)
     private Date expirationDate;
+    @Column(nullable = false)
     private Date fabricationDate;
+    @Column(nullable = false, length = 5)
     private double length;
+    @Column(nullable = false, length = 5)
     private double width;
+    @Column(nullable = false, length = 5)
     private double height;
+    @Column(nullable = false, length = 50)
     private String batch;
+    @Column(nullable = false, length = 5)
     private int quantity;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    public LocalDateTime getRegistrationDate;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Packing packing;
 
     public Product(String packageProduct, double weight, Date expirationDate,
@@ -45,7 +58,8 @@ public class Product implements Serializable {
     public Product(){
     }
 
-
+    public void setRegistrationDate(LocalDateTime utc) {
+    }
     public String getDescription() {
         return description;
     }
@@ -132,11 +146,11 @@ public class Product implements Serializable {
     public void setHeight(double height) {
         this.height = height;
     }
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 }

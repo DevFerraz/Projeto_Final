@@ -3,16 +3,22 @@ package br.com.natanferraz.distribution_center_app.model;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 public class StreetLayout implements Serializable {
     @Serial
     private static final long serialVersionUID = -5L;
+    public LocalDateTime getRegistrationDate;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
+    @Column(nullable = false, unique = true, length = 10)
     private String street;
+    @Column(nullable = false, unique = true, length = 5)
     private String picking;
+    @Column(nullable = false, length = 2)
     private int level;
     @OneToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "pallet_id")
@@ -38,6 +44,8 @@ public class StreetLayout implements Serializable {
 
     }
 
+    public void setRegistrationDate(LocalDateTime utc) {
+    }
     public String getStreet() {
         return street;
     }
@@ -63,11 +71,11 @@ public class StreetLayout implements Serializable {
     }
 
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 }

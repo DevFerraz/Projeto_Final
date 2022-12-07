@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,11 +16,14 @@ import java.util.Collection;
 public class Packing implements Serializable {
     @Serial
     private static final long serialVersionUID = -2L;
+    public LocalDateTime getRegistrationDate;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
+    @Column(nullable = false, length = 50)
     private String description;
+
     @OneToMany(mappedBy = "packing", cascade = CascadeType.ALL)
     private Collection<Product> product;
 
@@ -30,12 +35,14 @@ public class Packing implements Serializable {
         this.description = description;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
+    public void setRegistrationDate(LocalDateTime utc) {
+    }
 }
