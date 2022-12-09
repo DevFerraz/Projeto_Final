@@ -55,7 +55,7 @@ public class PalletController {
         Pallet pallet = new Pallet();
         BeanUtils.copyProperties(palletDto, pallet);
         pallet.setId(palletOptional.get().getId());
-        pallet.setRegistrationDate(palletOptional.get().getRegistrationDate);
+        pallet.setRegistrationDate(palletOptional.get().registrationDate);
         return ResponseEntity.status(HttpStatus.OK).body(palletService.save(pallet));
     }
 
