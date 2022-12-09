@@ -57,7 +57,7 @@ public class PackingController {
         Packing packing = new Packing();
         BeanUtils.copyProperties(packingDto, packing);
         packing.setId(packingOptional.get().getId());
-        packing.setRegistrationDate(packingOptional.get().getRegistrationDate);
+        packing.setRegistrationDate(packingOptional.get().registrationDate);
         return ResponseEntity.status(HttpStatus.OK).body(packingService.save(packing));
     }
 

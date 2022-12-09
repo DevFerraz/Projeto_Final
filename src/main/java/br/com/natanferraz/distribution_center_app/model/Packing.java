@@ -1,7 +1,9 @@
 package br.com.natanferraz.distribution_center_app.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -12,37 +14,23 @@ import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Entity
 public class Packing implements Serializable {
     @Serial
     private static final long serialVersionUID = -2L;
-    public LocalDateTime getRegistrationDate;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private UUID id;
+
+    public LocalDateTime registrationDate;
+
     @Column(nullable = false, length = 50)
     private String description;
 
     @OneToMany(mappedBy = "packing", cascade = CascadeType.ALL)
     private Collection<Product> product;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public void setRegistrationDate(LocalDateTime utc) {
-    }
 }
