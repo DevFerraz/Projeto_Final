@@ -1,6 +1,7 @@
 package br.com.natanferraz.distribution_center_app.controller;
 
 import br.com.natanferraz.distribution_center_app.dto.InvoiceDto;
+import br.com.natanferraz.distribution_center_app.model.CustomError;
 import br.com.natanferraz.distribution_center_app.model.Invoice;
 import br.com.natanferraz.distribution_center_app.service.InvoiceService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,15 +15,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/invoice")
+@RequestMapping(path = "/invoice", produces = "application/json")
 public class InvoiceController {
     @Autowired
     InvoiceService invoiceService;
@@ -30,13 +29,15 @@ public class InvoiceController {
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody InvoiceDto invoiceDto) {
         if(invoiceService.existsByInvoiceNumber(invoiceDto.getInvoiceNumber())){
+
+            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
+                    "Conflict: Invoice already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Conflict: Invoice already created");
+                    .body(error);
         }
         Invoice invoice = new Invoice();
         BeanUtils.copyProperties(invoiceDto, invoice);
-        invoice.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
-
+        log.info("Invoice created");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(invoiceService
@@ -48,7 +49,11 @@ public class InvoiceController {
         Optional<Invoice> invoiceOptional = invoiceService.findById(id);
         log.info("Invoice searched by id");
         if(invoiceOptional.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invoice not found");
+
+            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+                    "Not Found: Invoice not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
         log.info("Invoice found by id");
         return ResponseEntity.status(HttpStatus.OK).body(invoiceOptional.get());
@@ -59,7 +64,11 @@ public class InvoiceController {
                                          @RequestBody InvoiceDto invoiceDto) {
         Optional<Invoice> invoiceOptional = invoiceService.findById(id);
         if(invoiceOptional.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invoice not found");
+
+            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+                    "Not Found: Invoice not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
         Invoice invoice = new Invoice();
         BeanUtils.copyProperties(invoiceDto, invoice);
@@ -73,11 +82,18 @@ public class InvoiceController {
         Optional<Invoice> invoiceOptional = invoiceService.findById(id);
         log.info("Invoice searched by id");
         if(invoiceOptional.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invoice not found");
+
+            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+                    "Not Found: Invoice not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
         log.info("Invoice found by id");
         invoiceService.delete((invoiceOptional.get()));
-        return ResponseEntity.status(HttpStatus.OK).body("Invoice deleted successfully");
+        CustomError error = new CustomError("DELETED", HttpStatus.NO_CONTENT,
+                "Invoice deleted successfully");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(error);
     }
 //    @PreAuthorize("hasAnyRole('EMPLOYEE', 'DIRECTOR', 'ADMIN')")
     @GetMapping()

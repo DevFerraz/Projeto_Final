@@ -31,4 +31,8 @@ public class PackingService {
     public Optional<Packing> findById(UUID id) {
         return packingRepository.findById(id);
     }
+
+    public boolean existsByDescription(String description) {
+        return packingRepository.existsByDescription(description);
+    }
 }

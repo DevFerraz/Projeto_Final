@@ -9,11 +9,11 @@ import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
 @Entity
@@ -47,4 +47,22 @@ public class Invoice implements Serializable {
     private String product;
 
     private int quantity;
+
+    public Invoice(){
+        this.registrationDate = LocalDateTime.now(ZoneId.of("UTC"));
+    }
+
+    public Invoice(String invoiceNumber, Date expeditionDate, Double invoiceValue,
+                   String providerRegister, String providerPhone, String providerAddress, String product, int quantity) {
+
+        this.registrationDate = LocalDateTime.now(ZoneId.of("UTC"));
+        this.invoiceNumber = invoiceNumber;
+        this.expeditionDate = expeditionDate;
+        this.invoiceValue = invoiceValue;
+        this.providerRegister = providerRegister;
+        this.providerPhone = providerPhone;
+        this.providerAddress = providerAddress;
+        this.product = product;
+        this.quantity = quantity;
+    }
 }

@@ -1,6 +1,7 @@
 package br.com.natanferraz.distribution_center_app.controller;
 
 import br.com.natanferraz.distribution_center_app.dto.StreetLayoutDto;
+import br.com.natanferraz.distribution_center_app.model.CustomError;
 import br.com.natanferraz.distribution_center_app.model.StreetLayout;
 import br.com.natanferraz.distribution_center_app.service.StreetLayoutService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,12 +27,29 @@ public class StreetLayoutController{
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody StreetLayoutDto streetLayoutDto) {
         if(streetLayoutService.existsByStreet(streetLayoutDto.getStreet())){
+
+            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
+                    "Conflict: Street already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Conflict: Street already created");
+                    .body(error);
+
+        } else if(streetLayoutService.existsByPicking(streetLayoutDto.getPicking())){
+
+            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
+                    "Conflict: Picking already created");
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(error);
+
+        } else if(streetLayoutService.existsByStreetAndPicking(streetLayoutDto.getStreet(), streetLayoutDto.getPicking())){
+
+            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
+                    "Conflict: Street and Picking already created");
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(error);
+
         }
         StreetLayout streetLayout = new StreetLayout();
         BeanUtils.copyProperties(streetLayoutDto, streetLayout);
-        streetLayout.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
         log.info("Street layout created");
         return ResponseEntity.status(HttpStatus.CREATED).body(streetLayoutService
                 .save(streetLayout));
@@ -42,8 +58,12 @@ public class StreetLayoutController{
     public ResponseEntity<Object> read(@PathVariable(value = "id") UUID id) {
         Optional<StreetLayout> streetLayoutOptional = streetLayoutService.findById(id);
         log.info("Street Layout searched by id");
-        if(!streetLayoutOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Street Layout not found");
+        if(streetLayoutOptional.isEmpty()){
+
+            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+                    "Not Found: Street Layout not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
         log.info("Street Layout found by id");
         return ResponseEntity.status(HttpStatus.OK).body(streetLayoutOptional.get());
@@ -53,30 +73,28 @@ public class StreetLayoutController{
     public ResponseEntity<Object> update(@PathVariable(value = "id") UUID id,
                                          @RequestBody StreetLayoutDto streetLayoutDto) {
         Optional<StreetLayout> streetLayoutOptional = streetLayoutService.findById(id);
-        if(!streetLayoutOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Street Layout not found");
+        if(streetLayoutOptional.isEmpty()){
+
+            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+                    "Not Found: Product not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
+
         StreetLayout streetLayout = new StreetLayout();
         BeanUtils.copyProperties(streetLayoutDto, streetLayout);
         streetLayout.setId(streetLayoutOptional.get().getId());
-        streetLayout.setRegistrationDate(streetLayoutOptional.get().getRegistrationDate);
+        streetLayout.setRegistrationDate(streetLayoutOptional.get().registrationDate);
         return ResponseEntity.status(HttpStatus.OK).body(streetLayoutService.save(streetLayout));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable(value = "id") UUID id) {
-        Optional<StreetLayout> streetLayoutOptional = streetLayoutService.findById(id);
-        log.info("Street Layout searched by id");
-        if(!streetLayoutOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Street Layout not found");
-        }
-        log.info("Street Layout found by id");
-        streetLayoutService.delete((streetLayoutOptional.get()));
-        return ResponseEntity.status(HttpStatus.OK).body("Street Layout deleted successfully");
+    public ResponseEntity<Object> delete() {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Street Layout Delete cannot be used");
     }
 
     @GetMapping()
-    public ResponseEntity<Page<StreetLayout>> list(@PageableDefault(page = 0, size = 5, sort = "id",
+    public ResponseEntity<Page<StreetLayout>> list(@PageableDefault(size = 5, sort = "id",
             direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("Street Layout list showed");
         return ResponseEntity.status(HttpStatus.OK).body(streetLayoutService.findAll(pageable));

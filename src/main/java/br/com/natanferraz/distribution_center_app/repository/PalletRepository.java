@@ -7,5 +7,5 @@ import java.util.UUID;
 
 @Repository
 public interface PalletRepository extends JpaRepository<Pallet, UUID> {
-
+    boolean existsByHeightAndAndWeightAndLengthAndWidth(double height, double weight, double length, double width);
 }

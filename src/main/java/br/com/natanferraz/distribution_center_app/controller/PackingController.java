@@ -1,6 +1,7 @@
 package br.com.natanferraz.distribution_center_app.controller;
 
 import br.com.natanferraz.distribution_center_app.dto.PackingDto;
+import br.com.natanferraz.distribution_center_app.model.CustomError;
 import br.com.natanferraz.distribution_center_app.model.Packing;
 import br.com.natanferraz.distribution_center_app.repository.PackingRepository;
 import br.com.natanferraz.distribution_center_app.service.PackingService;
@@ -14,8 +15,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,9 +27,15 @@ public class PackingController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody PackingDto packingDto) {
+        if(packingService.existsByDescription(packingDto.getDescription())){
+
+            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
+                    "Conflict: Packing already created");
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(error);
+        }
         Packing packing = new Packing();
         BeanUtils.copyProperties(packingDto, packing);
-        packing.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
         log.info("Packing created");
         return ResponseEntity.status(HttpStatus.CREATED).body(packingService.save(packing));
 
@@ -40,8 +45,12 @@ public class PackingController {
     public ResponseEntity<Object> read(@PathVariable(value = "id") UUID id) {
         Optional<Packing> packingOptional = packingService.findById(id);
         log.info("Packing searched by id");
-        if(!packingOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Packing not found");
+        if(packingOptional.isEmpty()){
+
+            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+                    "Not Found: Packing not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
         log.info("Packing found by id");
         return ResponseEntity.status(HttpStatus.OK).body(packingOptional.get());
@@ -52,7 +61,11 @@ public class PackingController {
                                          @RequestBody PackingDto packingDto) {
         Optional<Packing> packingOptional = packingService.findById(id);
         if(!packingOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Packing not found");
+
+            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+                    "Not Found: Packing not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
         Packing packing = new Packing();
         BeanUtils.copyProperties(packingDto, packing);
@@ -65,12 +78,19 @@ public class PackingController {
     public ResponseEntity<Object> delete(@PathVariable(value = "id") UUID id) {
         Optional<Packing> packingOptional = packingService.findById(id);
         log.info("Packing searched by id");
-        if(!packingOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Packing not found");
+        if(packingOptional.isEmpty()){
+
+            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+                    "Not Found: Packing not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
         log.info("Packing found by id");
         packingService.delete((packingOptional.get()));
-        return ResponseEntity.status(HttpStatus.OK).body("Packing deleted successfully");
+        CustomError error = new CustomError("DELETED", HttpStatus.NO_CONTENT,
+                "Packing deleted successfully");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(error);
     }
 
     @GetMapping()

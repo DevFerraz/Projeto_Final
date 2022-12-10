@@ -1,16 +1,17 @@
 package br.com.natanferraz.distribution_center_app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -18,8 +19,6 @@ public class Packing implements Serializable {
     @Serial
     private static final long serialVersionUID = -2L;
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -31,13 +30,9 @@ public class Packing implements Serializable {
     private String description;
 
     @OneToMany(mappedBy = "packing", cascade = CascadeType.ALL)
-    private Collection<Product> product;
+    private List<Product> products;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
+    public Packing(){
+        this.registrationDate = LocalDateTime.now(ZoneId.of("UTC"));
     }
 }

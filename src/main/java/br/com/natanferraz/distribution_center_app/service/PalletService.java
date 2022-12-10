@@ -29,4 +29,9 @@ public class PalletService {
     public Optional<Pallet> findById(UUID id) {
         return palletRepository.findById(id);
     }
+    public boolean existsByHeightAndAndWeightAndLengthAndWidth(double height, double weight,
+                                     double length, double width){
+        return palletRepository.existsByHeightAndAndWeightAndLengthAndWidth(height, weight, length, width);
+    }
+
 }
