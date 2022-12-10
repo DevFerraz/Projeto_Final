@@ -1,9 +1,6 @@
 package br.com.natanferraz.distribution_center_app.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -21,6 +18,8 @@ public class Packing implements Serializable {
     @Serial
     private static final long serialVersionUID = -2L;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -33,4 +32,12 @@ public class Packing implements Serializable {
 
     @OneToMany(mappedBy = "packing", cascade = CascadeType.ALL)
     private Collection<Product> product;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 }
