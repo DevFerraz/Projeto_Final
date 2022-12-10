@@ -1,6 +1,7 @@
 package br.com.natanferraz.distribution_center_app.controller;
 
 import br.com.natanferraz.distribution_center_app.dto.ProductDto;
+import br.com.natanferraz.distribution_center_app.model.CustomError;
 import br.com.natanferraz.distribution_center_app.model.Product;
 import br.com.natanferraz.distribution_center_app.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +14,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/product", produces = "application/json")
 public class ProductController {
     @Autowired
@@ -28,12 +28,14 @@ public class ProductController {
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody ProductDto productDto) {
         if(productService.existsByBatch(productDto.getBatch())){
+
+            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
+                    "Conflict: Batch already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Conflict: Batch already created");
+                    .body(error);
         }
         Product product = new Product();
         BeanUtils.copyProperties(productDto, product);
-        product.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
         log.info("Product created");
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
@@ -42,8 +44,12 @@ public class ProductController {
     public ResponseEntity<Object> read(@PathVariable(value = "id") UUID id) {
         Optional<Product> productOptional = productService.findById(id);
         log.info("Product searched by id");
-        if(!productOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        if(productOptional.isEmpty()){
+
+            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+                    "Not Found: Product not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
         log.info("Product found by id");
         return ResponseEntity.status(HttpStatus.OK).body(productOptional.get());
@@ -53,9 +59,13 @@ public class ProductController {
     public ResponseEntity<Object> update(@PathVariable(value = "id") UUID id,
                                          @RequestBody ProductDto productDto) {
         Optional<Product> productOptional = productService.findById(id);
-        if(!productOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        if(productOptional.isEmpty()){
+            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+                    "Not Found: Product not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
+        log.info("Product found by id");
         Product product = new Product();
         BeanUtils.copyProperties(productDto, product);
         product.setId(productOptional.get().getId());
@@ -67,12 +77,18 @@ public class ProductController {
     public ResponseEntity<Object> delete(@PathVariable(value = "id") UUID id) {
         Optional<Product> productOptional = productService.findById(id);
         log.info("Product searched by id");
-        if(!productOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        if(productOptional.isEmpty()){
+            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+                    "Not Found: Product not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
-        log.info("Product searched by id");
+        log.info("Product found by id");
         productService.delete((productOptional.get()));
-        return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully");
+        CustomError error = new CustomError("DELETED", HttpStatus.NO_CONTENT,
+                "Product deleted successfully");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(error);
     }
 
     @GetMapping()

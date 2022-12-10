@@ -23,15 +23,22 @@ public class StreetLayoutService {
     public void delete(StreetLayout streetLayout){
         streetLayoutRepository.delete(streetLayout);
     }
-    public boolean existsByStreet(String street){
-        return streetLayoutRepository.existsByStreet(street);
-    }
     public Page<StreetLayout> findAll(Pageable pageable) {
         return streetLayoutRepository.findAll(pageable);
     }
     public Optional<StreetLayout> findById(UUID id) {
         return streetLayoutRepository.findById(id);
     }
+    public boolean existsByStreet(String street){
+        return streetLayoutRepository.existsByStreet(street);
+    }
+    public boolean existsByPicking(String picking){
+        return streetLayoutRepository.existsByPicking(picking);
+}
+    public boolean existsByStreetAndPicking(String street, String picking){
+        return streetLayoutRepository.existsByStreetAndPicking(street, picking);
+    }
+
 }
 
 
