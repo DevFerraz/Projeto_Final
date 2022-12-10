@@ -25,7 +25,7 @@ public class PalletController {
     @Autowired
     PalletService palletService;
     @PostMapping("/create")
-    public ResponseEntity<Object> create(@RequestBody PalletDto palletDto) {
+    public ResponseEntity<Pallet> create(@RequestBody PalletDto palletDto) {
         Pallet pallet = new Pallet();
         BeanUtils.copyProperties(palletDto, pallet);
         pallet.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
@@ -38,7 +38,7 @@ public class PalletController {
     public ResponseEntity<Object> read(@PathVariable(value = "id") UUID id) {
         Optional<Pallet> palletOptional = palletService.findById(id);
         log.info("Pallet searched by id");
-        if (!palletOptional.isPresent()) {
+        if (palletOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pallet not found");
         }
         log.info("Pallet found by id");
@@ -49,7 +49,7 @@ public class PalletController {
     public ResponseEntity<Object> update(@PathVariable(value = "id") UUID id,
                                          @RequestBody PalletDto palletDto) {
         Optional<Pallet> palletOptional = palletService.findById(id);
-        if(!palletOptional.isPresent()){
+        if(palletOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pallet not found");
         }
         Pallet pallet = new Pallet();
@@ -63,7 +63,7 @@ public class PalletController {
     public ResponseEntity<Object> delete(@PathVariable(value = "id") UUID id) {
         Optional<Pallet> palletOptional = palletService.findById(id);
         log.info("Pallet searched by id");
-        if (!palletOptional.isPresent()) {
+        if (palletOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pallet not found");
         }
         palletService.delete((palletOptional.get()));
@@ -71,7 +71,7 @@ public class PalletController {
     }
 
     @GetMapping()
-    public ResponseEntity<Page<Pallet>> list(@PageableDefault(page = 0, size = 5, sort = "id",
+    public ResponseEntity<Page<Pallet>> list(@PageableDefault(size = 5, sort = "id",
             direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("Pallet list showed");
         return ResponseEntity.status(HttpStatus.OK).body(palletService.findAll(pageable));

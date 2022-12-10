@@ -42,8 +42,6 @@ public class Pallet implements Serializable {
     @JoinColumn(name = "street_layout_id")
     private StreetLayout streetLayout;
 
-
-
     public Pallet(double maxWeight, String status,
                   double length, double width, double height,
                   double weight) {
