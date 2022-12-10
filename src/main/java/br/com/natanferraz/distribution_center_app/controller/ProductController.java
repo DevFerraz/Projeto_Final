@@ -59,7 +59,7 @@ public class ProductController {
         Product product = new Product();
         BeanUtils.copyProperties(productDto, product);
         product.setId(productOptional.get().getId());
-        product.setRegistrationDate(productOptional.get().getRegistrationDate);
+        product.setRegistrationDate(productOptional.get().registrationDate);
         return ResponseEntity.status(HttpStatus.OK).body(productService.save(product));
     }
 

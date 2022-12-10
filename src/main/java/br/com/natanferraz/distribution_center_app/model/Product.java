@@ -1,6 +1,10 @@
 package br.com.natanferraz.distribution_center_app.model;
 
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -9,6 +13,9 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class Product implements Serializable {
     @Serial
     private static final long serialVersionUID = -4L;
@@ -35,7 +42,7 @@ public class Product implements Serializable {
     private String batch;
     @Column(nullable = false, length = 5)
     private int quantity;
-    public LocalDateTime getRegistrationDate;
+    public LocalDateTime registrationDate;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Packing packing;
 
@@ -53,104 +60,5 @@ public class Product implements Serializable {
         this.packing = packing;
         this.length = length;
         this.width = width;
-    }
-    @Deprecated
-    public Product(){
-    }
-
-    public void setRegistrationDate(LocalDateTime utc) {
-    }
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getPackageProduct() {
-        return packageProduct;
-    }
-
-    public void setPackageProduct(String packageProduct) {
-        this.packageProduct = packageProduct;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public Date getExpirationDate() {
-        return expirationDate;
-    }
-
-    public Date getFabricationDate() {
-        return fabricationDate;
-    }
-
-    public void setFabricationDate(Date fabricationDate) {
-        this.fabricationDate = fabricationDate;
-    }
-
-    public void setExpirationDate(Date date) {
-        this.expirationDate = date;
-    }
-
-    public String getBatch() {
-        return batch;
-    }
-
-    public void setBatch(String batch) {
-        this.batch = batch;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public Packing getPacking() {
-        return packing;
-    }
-
-    public void setPacking(Packing packing) {
-        this.packing = packing;
-    }
-    public double getLength() {
-        return length;
-    }
-
-    public void setLength(double length) {
-        this.length = length;
-    }
-
-    public double getWidth() {
-        return width;
-    }
-
-    public void setWidth(double width) {
-        this.width = width;
-    }
-
-    public double getHeight() {
-        return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 }
