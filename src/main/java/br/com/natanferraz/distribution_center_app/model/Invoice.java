@@ -20,26 +20,31 @@ import java.util.UUID;
 public class Invoice implements Serializable {
     @Serial
     private static final long serialVersionUID = -2L;
-    public LocalDateTime getRegistrationDate;
+    public LocalDateTime registrationDate;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @Column(nullable = false, unique = true, length = 10)
+
+    @Column(nullable = false, unique = true, length = 9)
     private String invoiceNumber;
+
     @Column(nullable = false)
     private Date expeditionDate;
-    @Column(nullable = false, length = 10)
-    private double invoiceValue;
+
+    @Column(nullable = false)
+    private Double invoiceValue;
+
     @Column(nullable = false, unique = true, length = 15)
     private String providerRegister;
-    @Column(nullable = false, unique = true, length = 15)
-    private String providerPhone;
-    @Column(nullable = false, unique = true, length = 40)
-    private String providerAddress;
-    @Column(nullable = false, length = 20)
-    private String product;
-    private int quantity;
 
-    public void setRegistrationDate(LocalDateTime utc) {
-    }
+    @Column(nullable = false, length = 17)
+    private String providerPhone;
+
+    @Column(nullable = false)
+    private String providerAddress;
+
+    @Column(nullable = false)
+    private String product;
+
+    private int quantity;
 }

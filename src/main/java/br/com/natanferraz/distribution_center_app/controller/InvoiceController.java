@@ -36,16 +36,18 @@ public class InvoiceController {
         Invoice invoice = new Invoice();
         BeanUtils.copyProperties(invoiceDto, invoice);
         invoice.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
-        log.info("Dimension created");
-        return ResponseEntity.status(HttpStatus.CREATED).body(invoiceService.save(invoice));
 
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(invoiceService
+                        .save(invoice));
     }
 //    @PreAuthorize("hasAnyRole('EMPLOYEE', 'DIRECTOR', 'ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Object> read(@PathVariable(value = "id") UUID id) {
         Optional<Invoice> invoiceOptional = invoiceService.findById(id);
         log.info("Invoice searched by id");
-        if(!invoiceOptional.isPresent()){
+        if(invoiceOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invoice not found");
         }
         log.info("Invoice found by id");
@@ -56,13 +58,13 @@ public class InvoiceController {
     public ResponseEntity<Object> update(@PathVariable(value = "id") UUID id,
                                          @RequestBody InvoiceDto invoiceDto) {
         Optional<Invoice> invoiceOptional = invoiceService.findById(id);
-        if(!invoiceOptional.isPresent()){
+        if(invoiceOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invoice not found");
         }
         Invoice invoice = new Invoice();
         BeanUtils.copyProperties(invoiceDto, invoice);
         invoice.setId(invoiceOptional.get().getId());
-        invoice.setRegistrationDate(invoiceOptional.get().getRegistrationDate);
+        invoice.setRegistrationDate(invoiceOptional.get().registrationDate);
         return ResponseEntity.status(HttpStatus.OK).body(invoiceService.save(invoice));
     }
 //    @PreAuthorize("hasAnyRole('DIRECTOR', 'ADMIN')")
@@ -70,7 +72,7 @@ public class InvoiceController {
     public ResponseEntity<Object> delete(@PathVariable(value = "id") UUID id) {
         Optional<Invoice> invoiceOptional = invoiceService.findById(id);
         log.info("Invoice searched by id");
-        if(!invoiceOptional.isPresent()){
+        if(invoiceOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invoice not found");
         }
         log.info("Invoice found by id");

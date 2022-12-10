@@ -2,6 +2,7 @@ package br.com.natanferraz.distribution_center_app.service;
 
 import br.com.natanferraz.distribution_center_app.model.Invoice;
 import br.com.natanferraz.distribution_center_app.repository.InvoiceRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,12 +13,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class InvoiceService {
     @Autowired
     InvoiceRepository invoiceRepository;
     @Transactional
     public Invoice save(Invoice invoice){
-        return invoiceRepository.save(invoice);
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+        log.info("Invoice created");
+        return savedInvoice;
     }
     @Transactional
     public void delete(Invoice invoice){
