@@ -26,27 +26,12 @@ public class StreetLayoutController{
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody StreetLayoutDto streetLayoutDto) {
-        if(streetLayoutService.existsByStreet(streetLayoutDto.getStreet())){
-
-            CustomError error = new CustomError( HttpStatus.CONFLICT,
-                    "Conflict: Street already created");
+        if(streetLayoutService.existsByStreetAndPickingAndLevel(streetLayoutDto.getStreet(),
+                streetLayoutDto.getPicking(), streetLayoutDto.getLevel())){
+            CustomError error = new CustomError(HttpStatus.CONFLICT,
+                    "Conflict: Street, Picking and Level already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(error);
-
-        } else if(streetLayoutService.existsByPicking(streetLayoutDto.getPicking())){
-
-            CustomError error = new CustomError( HttpStatus.CONFLICT,
-                    "Conflict: Picking already created");
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(error);
-
-        } else if(streetLayoutService.existsByStreetAndPicking(streetLayoutDto.getStreet(), streetLayoutDto.getPicking())){
-
-            CustomError error = new CustomError( HttpStatus.CONFLICT,
-                    "Conflict: Street and Picking already created");
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(error);
-
         }
         StreetLayout streetLayout = new StreetLayout();
         BeanUtils.copyProperties(streetLayoutDto, streetLayout);

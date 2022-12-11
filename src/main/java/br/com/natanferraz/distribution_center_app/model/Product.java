@@ -3,7 +3,6 @@ package br.com.natanferraz.distribution_center_app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -58,6 +57,9 @@ public class Product implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Packing packing;
+
+//    private Double costPrice;
+//    private Double sellPrice;
 
     public Product(String packageProduct, double weight, Date expirationDate,
                    Date fabricationDate, double length, double width,

@@ -43,14 +43,16 @@ public class Invoice implements Serializable {
     @Column(nullable = false)
     private String product;
 
-    private int quantity;
+    private Integer quantity;
+    private Boolean income;
 
     public Invoice(){
         this.registrationDate = LocalDateTime.now(ZoneId.of("UTC"));
     }
 
     public Invoice(String invoiceNumber, Date expeditionDate, Double invoiceValue,
-                   String providerRegister, String providerPhone, String providerAddress, String product, int quantity) {
+                   String providerRegister, String providerPhone, String providerAddress, String product,
+                   Integer quantity, Boolean income) {
 
         this.registrationDate = LocalDateTime.now(ZoneId.of("UTC"));
         this.invoiceNumber = invoiceNumber;
@@ -61,5 +63,7 @@ public class Invoice implements Serializable {
         this.providerAddress = providerAddress;
         this.product = product;
         this.quantity = quantity;
+        this.income = income;
+
     }
 }
