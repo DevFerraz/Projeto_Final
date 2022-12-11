@@ -8,4 +8,5 @@ import java.util.UUID;
 @Repository
 public interface PackingRepository extends JpaRepository<Packing, UUID> {
     boolean existsByDescription(String description);
+    Packing findByDescription(String description);
 }

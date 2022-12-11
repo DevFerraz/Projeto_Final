@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
-import java.util.UUID;
 
 
 @Slf4j
@@ -32,8 +31,10 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody UserDto userDto) {
         if (userService.existsByUsername(userDto.getUsername())) {
+            CustomError error = new CustomError( HttpStatus.CONFLICT,
+                    "Conflict: User already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Conflict: User already created");
+                    .body(error);
         }
         User user = new User();
         BeanUtils.copyProperties(userDto, user);
@@ -51,7 +52,10 @@ public class UserController {
         Optional<User> userOptional = userService.findByUsername(username);
         log.info("User searched by id");
         if (userOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
+                    "Not Found: User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
         }
         log.info("User found by id");
         return ResponseEntity.status(HttpStatus.OK).body(userOptional.get());
@@ -64,8 +68,10 @@ public class UserController {
         userDto.setUsername(username);
         Optional<User> userOptional = userService.findByUsername(username);
         if (userOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
+                    "Not Found: User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);        }
         User user = new User();
         BeanUtils.copyProperties(userDto, user);
         user.setRegistrationDate(userOptional.get().registrationDate);
@@ -78,11 +84,13 @@ public class UserController {
         Optional<User> userOptional = userService.findByUsername(username);
         log.info("User searched by id");
         if (userOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
+                    "Not Found: User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);        }
         log.info("User found by id");
         userService.delete((userOptional.get()));
-        CustomError error = new CustomError("DELETED", HttpStatus.NO_CONTENT,
+        CustomError error = new CustomError( HttpStatus.NO_CONTENT,
                 "User deleted successfully");
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(error);

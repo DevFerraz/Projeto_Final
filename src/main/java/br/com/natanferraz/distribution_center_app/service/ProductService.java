@@ -1,5 +1,6 @@
 package br.com.natanferraz.distribution_center_app.service;
 
+import br.com.natanferraz.distribution_center_app.model.Packing;
 import br.com.natanferraz.distribution_center_app.model.Product;
 import br.com.natanferraz.distribution_center_app.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import java.util.UUID;
 public class ProductService {
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    PackingService packingService;
     @Transactional
     public Product save(Product product){
         return productRepository.save(product);
@@ -23,7 +26,6 @@ public class ProductService {
     public void delete(Product product){
         productRepository.delete(product);
     }
-
     public boolean existsByBatch(String batch) {
         return productRepository.existsByBatch(batch);
     }
@@ -32,5 +34,8 @@ public class ProductService {
     }
     public Optional<Product> findById(UUID id) {
         return productRepository.findById(id);
+    }
+    public Packing findPackingByDescription(String description){
+        return packingService.getByDescription(description);
     }
 }

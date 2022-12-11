@@ -21,8 +21,6 @@ public class Employee implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-
-
     @Column(nullable = false)
     private Authority authority;
 

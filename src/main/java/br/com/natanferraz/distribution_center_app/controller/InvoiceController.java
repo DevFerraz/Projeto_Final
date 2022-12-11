@@ -30,7 +30,7 @@ public class InvoiceController {
     public ResponseEntity<Object> create(@RequestBody InvoiceDto invoiceDto) {
         if(invoiceService.existsByInvoiceNumber(invoiceDto.getInvoiceNumber())){
 
-            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
+            CustomError error = new CustomError( HttpStatus.CONFLICT,
                     "Conflict: Invoice already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(error);
@@ -49,8 +49,7 @@ public class InvoiceController {
         Optional<Invoice> invoiceOptional = invoiceService.findById(id);
         log.info("Invoice searched by id");
         if(invoiceOptional.isEmpty()){
-
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Invoice not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
@@ -65,7 +64,7 @@ public class InvoiceController {
         Optional<Invoice> invoiceOptional = invoiceService.findById(id);
         if(invoiceOptional.isEmpty()){
 
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Invoice not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
@@ -83,14 +82,14 @@ public class InvoiceController {
         log.info("Invoice searched by id");
         if(invoiceOptional.isEmpty()){
 
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError(HttpStatus.NOT_FOUND,
                     "Not Found: Invoice not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
         }
         log.info("Invoice found by id");
         invoiceService.delete((invoiceOptional.get()));
-        CustomError error = new CustomError("DELETED", HttpStatus.NO_CONTENT,
+        CustomError error = new CustomError( HttpStatus.NO_CONTENT,
                 "Invoice deleted successfully");
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(error);
