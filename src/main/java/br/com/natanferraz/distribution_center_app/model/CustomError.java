@@ -1,30 +1,26 @@
 package br.com.natanferraz.distribution_center_app.model;
 
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@AllArgsConstructor
 public class CustomError {
 
-    private String errorTitle;
-    private HttpStatus status;
+    private final String errorTitle;
+    private final Integer status;
     private String message;
 
+    public CustomError(HttpStatus status, String message){
+        this.errorTitle = status.getReasonPhrase().toUpperCase();
+        this.status = status.value();
+        this.message = message;
+    }
+
     public String getErrorTitle() {
-        return this.status.getReasonPhrase().toUpperCase();
+        return errorTitle;
     }
 
 
     public Integer getStatus() {
-        return status.value();
-    }
-
-    public void setStatus(HttpStatus status) {
-        this.status = status;
-    }
-
-    public void setErrorTitle(String errorTitle) {
-        this.errorTitle = errorTitle;
+        return this.status;
     }
 
     public String getMessage() {

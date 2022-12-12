@@ -19,7 +19,7 @@
 //@Table(name = "authorities")
 //public class AuthorityModel implements GrantedAuthority, Serializable {
 //    @Serial
-//    private static final long serialVersionUID = -6L;
+//    private static final long serialVersionUID = -1L;
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
 //    private UUID authorityId;

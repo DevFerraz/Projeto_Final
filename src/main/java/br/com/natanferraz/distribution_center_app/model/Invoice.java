@@ -1,17 +1,13 @@
 package br.com.natanferraz.distribution_center_app.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 
 @Getter
@@ -19,7 +15,7 @@ import java.util.UUID;
 @Entity
 public class Invoice implements Serializable {
     @Serial
-    private static final long serialVersionUID = -2L;
+    private static final long serialVersionUID = -3L;
     public LocalDateTime registrationDate;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,14 +42,16 @@ public class Invoice implements Serializable {
     @Column(nullable = false)
     private String product;
 
-    private int quantity;
+    private Integer quantity;
+    private Boolean income;
 
     public Invoice(){
         this.registrationDate = LocalDateTime.now(ZoneId.of("UTC"));
     }
 
     public Invoice(String invoiceNumber, Date expeditionDate, Double invoiceValue,
-                   String providerRegister, String providerPhone, String providerAddress, String product, int quantity) {
+                   String providerRegister, String providerPhone, String providerAddress, String product,
+                   Integer quantity, Boolean income) {
 
         this.registrationDate = LocalDateTime.now(ZoneId.of("UTC"));
         this.invoiceNumber = invoiceNumber;
@@ -64,5 +62,7 @@ public class Invoice implements Serializable {
         this.providerAddress = providerAddress;
         this.product = product;
         this.quantity = quantity;
+        this.income = income;
+
     }
 }

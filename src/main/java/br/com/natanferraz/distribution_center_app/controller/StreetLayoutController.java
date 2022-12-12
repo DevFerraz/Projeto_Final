@@ -26,27 +26,12 @@ public class StreetLayoutController{
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody StreetLayoutDto streetLayoutDto) {
-        if(streetLayoutService.existsByStreet(streetLayoutDto.getStreet())){
-
-            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
-                    "Conflict: Street already created");
+        if(streetLayoutService.existsByStreetAndPickingAndLevel(streetLayoutDto.getStreet(),
+                streetLayoutDto.getPicking(), streetLayoutDto.getLevel())){
+            CustomError error = new CustomError(HttpStatus.CONFLICT,
+                    "Conflict: Street, Picking and Level already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(error);
-
-        } else if(streetLayoutService.existsByPicking(streetLayoutDto.getPicking())){
-
-            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
-                    "Conflict: Picking already created");
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(error);
-
-        } else if(streetLayoutService.existsByStreetAndPicking(streetLayoutDto.getStreet(), streetLayoutDto.getPicking())){
-
-            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
-                    "Conflict: Street and Picking already created");
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(error);
-
         }
         StreetLayout streetLayout = new StreetLayout();
         BeanUtils.copyProperties(streetLayoutDto, streetLayout);
@@ -60,7 +45,7 @@ public class StreetLayoutController{
         log.info("Street Layout searched by id");
         if(streetLayoutOptional.isEmpty()){
 
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Street Layout not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
@@ -75,7 +60,7 @@ public class StreetLayoutController{
         Optional<StreetLayout> streetLayoutOptional = streetLayoutService.findById(id);
         if(streetLayoutOptional.isEmpty()){
 
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Product not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);

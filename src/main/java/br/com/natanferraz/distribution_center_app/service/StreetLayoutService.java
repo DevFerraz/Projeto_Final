@@ -29,16 +29,9 @@ public class StreetLayoutService {
     public Optional<StreetLayout> findById(UUID id) {
         return streetLayoutRepository.findById(id);
     }
-    public boolean existsByStreet(String street){
-        return streetLayoutRepository.existsByStreet(street);
+    public boolean existsByStreetAndPickingAndLevel(String street, String picking, Integer level) {
+        return streetLayoutRepository.existsByStreetAndPickingAndLevel(street, picking, level);
     }
-    public boolean existsByPicking(String picking){
-        return streetLayoutRepository.existsByPicking(picking);
-}
-    public boolean existsByStreetAndPicking(String street, String picking){
-        return streetLayoutRepository.existsByStreetAndPicking(street, picking);
-    }
-
 }
 
 

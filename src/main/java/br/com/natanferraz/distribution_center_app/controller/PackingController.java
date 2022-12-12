@@ -3,7 +3,6 @@ package br.com.natanferraz.distribution_center_app.controller;
 import br.com.natanferraz.distribution_center_app.dto.PackingDto;
 import br.com.natanferraz.distribution_center_app.model.CustomError;
 import br.com.natanferraz.distribution_center_app.model.Packing;
-import br.com.natanferraz.distribution_center_app.repository.PackingRepository;
 import br.com.natanferraz.distribution_center_app.service.PackingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -27,9 +26,9 @@ public class PackingController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody PackingDto packingDto) {
-        if(packingService.existsByDescription(packingDto.getDescription())){
+        if(packingService.existsByDescription(packingDto.getDescription().toUpperCase())){
 
-            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
+            CustomError error = new CustomError( HttpStatus.CONFLICT,
                     "Conflict: Packing already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(error);
@@ -47,7 +46,7 @@ public class PackingController {
         log.info("Packing searched by id");
         if(packingOptional.isEmpty()){
 
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Packing not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
@@ -60,9 +59,9 @@ public class PackingController {
     public ResponseEntity<Object> update(@PathVariable(value = "id") UUID id,
                                          @RequestBody PackingDto packingDto) {
         Optional<Packing> packingOptional = packingService.findById(id);
-        if(!packingOptional.isPresent()){
+        if(packingOptional.isEmpty()){
 
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Packing not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
@@ -80,21 +79,26 @@ public class PackingController {
         log.info("Packing searched by id");
         if(packingOptional.isEmpty()){
 
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Packing not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
         }
         log.info("Packing found by id");
-        packingService.delete((packingOptional.get()));
-        CustomError error = new CustomError("DELETED", HttpStatus.NO_CONTENT,
-                "Packing deleted successfully");
+        Packing packing = packingOptional.get();
+        if(packing.getProducts().size() > 0){
+            CustomError error = new CustomError(HttpStatus.PRECONDITION_REQUIRED,
+                    "This Packing has related products");
+            return ResponseEntity.status(HttpStatus.PRECONDITION_REQUIRED)
+                    .body(error);
+        }
+        packingService.delete((packing));
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .body(error);
+                .build();
     }
 
     @GetMapping()
-    public ResponseEntity<Page<Packing>> list(@PageableDefault(page = 0, size = 5, sort = "id",
+    public ResponseEntity<Page<Packing>> list(@PageableDefault(size = 5, sort = "id",
             direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("Packing list showed");
         return ResponseEntity.status(HttpStatus.OK).body(packingService.findAll(pageable));

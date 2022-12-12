@@ -15,13 +15,11 @@ import java.util.UUID;
 @Setter
 public class Employee implements Serializable {
     @Serial
-    private static final long serialVersionUID = -8L;
+    private static final long serialVersionUID = -2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-
-
 
     @Column(nullable = false)
     private Authority authority;

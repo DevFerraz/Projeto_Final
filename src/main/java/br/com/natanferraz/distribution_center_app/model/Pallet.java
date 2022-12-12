@@ -1,10 +1,7 @@
 package br.com.natanferraz.distribution_center_app.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,7 +14,7 @@ import java.util.UUID;
 @Setter
 public class Pallet implements Serializable {
     @Serial
-    private static final long serialVersionUID = -3L;
+    private static final long serialVersionUID = -5L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

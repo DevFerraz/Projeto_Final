@@ -7,7 +7,5 @@ import java.util.UUID;
 
 @Repository
 public interface StreetLayoutRepository extends JpaRepository<StreetLayout, UUID> {
-    boolean existsByStreet(String street);
-    boolean existsByPicking(String picking);
-    boolean existsByStreetAndPicking(String street, String picking);
+    boolean existsByStreetAndPickingAndLevel(String street, String picking, Integer level);
 }

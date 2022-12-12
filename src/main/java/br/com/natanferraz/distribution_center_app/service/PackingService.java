@@ -1,6 +1,5 @@
 package br.com.natanferraz.distribution_center_app.service;
 
-import br.com.natanferraz.distribution_center_app.model.Invoice;
 import br.com.natanferraz.distribution_center_app.model.Packing;
 import br.com.natanferraz.distribution_center_app.repository.PackingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +33,8 @@ public class PackingService {
 
     public boolean existsByDescription(String description) {
         return packingRepository.existsByDescription(description);
+    }
+    public Packing getByDescription(String description){
+        return packingRepository.findByDescription(description);
     }
 }

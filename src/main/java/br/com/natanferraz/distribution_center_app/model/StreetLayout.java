@@ -1,8 +1,6 @@
 package br.com.natanferraz.distribution_center_app.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serial;
@@ -16,14 +14,14 @@ import java.util.UUID;
 @Setter
 public class StreetLayout implements Serializable {
     @Serial
-    private static final long serialVersionUID = -5L;
+    private static final long serialVersionUID = -7L;
     public LocalDateTime registrationDate;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String street;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String picking;
     @Column(nullable = false, length = 2)
     private int level;

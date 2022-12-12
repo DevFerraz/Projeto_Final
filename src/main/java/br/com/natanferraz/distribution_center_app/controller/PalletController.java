@@ -28,7 +28,7 @@ public class PalletController {
         if(palletService.existsByHeightAndAndWeightAndLengthAndWidth(palletDto.getHeight(), palletDto.getWeight(),
                 palletDto.getLength(), palletDto.getWidth())){
 
-            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
+            CustomError error = new CustomError( HttpStatus.CONFLICT,
                     "Conflict: Pallet's dimensions already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(error);
@@ -46,7 +46,7 @@ public class PalletController {
         log.info("Pallet searched by id");
         if (palletOptional.isEmpty()) {
 
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Pallet not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
@@ -61,7 +61,7 @@ public class PalletController {
         Optional<Pallet> palletOptional = palletService.findById(id);
         if(palletOptional.isEmpty()){
 
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Pallet not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
@@ -79,13 +79,13 @@ public class PalletController {
         log.info("Pallet searched by id");
         if (palletOptional.isEmpty()) {
 
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Pallet not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
         }
         palletService.delete((palletOptional.get()));
-        CustomError error = new CustomError("DELETED", HttpStatus.NO_CONTENT,
+        CustomError error = new CustomError( HttpStatus.NO_CONTENT,
                 "Pallet deleted successfully");
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(error);

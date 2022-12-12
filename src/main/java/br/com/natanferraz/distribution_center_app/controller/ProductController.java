@@ -2,6 +2,7 @@ package br.com.natanferraz.distribution_center_app.controller;
 
 import br.com.natanferraz.distribution_center_app.dto.ProductDto;
 import br.com.natanferraz.distribution_center_app.model.CustomError;
+import br.com.natanferraz.distribution_center_app.model.Packing;
 import br.com.natanferraz.distribution_center_app.model.Product;
 import br.com.natanferraz.distribution_center_app.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,14 +29,19 @@ public class ProductController {
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody ProductDto productDto) {
         if(productService.existsByBatch(productDto.getBatch())){
-
-            CustomError error = new CustomError("CONFLICT", HttpStatus.CONFLICT,
+            CustomError error = new CustomError( HttpStatus.CONFLICT,
                     "Conflict: Batch already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(error);
         }
         Product product = new Product();
         BeanUtils.copyProperties(productDto, product);
+
+       Packing packing = productService.findPackingByDescription(productDto.getPacking().getDescription());
+
+       if(packing != null)
+           product.setPacking(packing);
+
         log.info("Product created");
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
@@ -46,7 +52,7 @@ public class ProductController {
         log.info("Product searched by id");
         if(productOptional.isEmpty()){
 
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Product not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
@@ -60,7 +66,7 @@ public class ProductController {
                                          @RequestBody ProductDto productDto) {
         Optional<Product> productOptional = productService.findById(id);
         if(productOptional.isEmpty()){
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Product not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
@@ -78,21 +84,21 @@ public class ProductController {
         Optional<Product> productOptional = productService.findById(id);
         log.info("Product searched by id");
         if(productOptional.isEmpty()){
-            CustomError error = new CustomError("NOT_FOUND", HttpStatus.NOT_FOUND,
+            CustomError error = new CustomError( HttpStatus.NOT_FOUND,
                     "Not Found: Product not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(error);
         }
         log.info("Product found by id");
         productService.delete((productOptional.get()));
-        CustomError error = new CustomError("DELETED", HttpStatus.NO_CONTENT,
+        CustomError error = new CustomError( HttpStatus.NO_CONTENT,
                 "Product deleted successfully");
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(error);
     }
 
     @GetMapping()
-    public ResponseEntity<Page<Product>> list(@PageableDefault(page = 0, size = 5, sort = "id",
+    public ResponseEntity<Page<Product>> list(@PageableDefault(size = 5, sort = "id",
             direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("Product list showed");
         return ResponseEntity.status(HttpStatus.OK).body(productService.findAll(pageable));
