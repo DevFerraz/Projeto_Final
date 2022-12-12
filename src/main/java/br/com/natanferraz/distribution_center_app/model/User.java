@@ -3,7 +3,6 @@ package br.com.natanferraz.distribution_center_app.model;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serial;
@@ -17,7 +16,7 @@ import java.time.ZoneId;
 @Table(name="users")
 public class User implements Serializable {
     @Serial
-    private static final long serialVersionUID = -7L;
+    private static final long serialVersionUID = -8L;
     @Id
     @Column(nullable = false, unique = true)
     private String username;
@@ -54,10 +53,4 @@ public class User implements Serializable {
     public String toString() {
         return super.toString();
     }
-
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
-
 }

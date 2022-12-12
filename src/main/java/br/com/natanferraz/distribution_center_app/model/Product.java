@@ -18,7 +18,7 @@ import java.util.UUID;
 @Setter
 public class Product implements Serializable {
     @Serial
-    private static final long serialVersionUID = -4L;
+    private static final long serialVersionUID = -6L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity
 public class Packing implements Serializable {
     @Serial
-    private static final long serialVersionUID = -2L;
+    private static final long serialVersionUID = -4L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

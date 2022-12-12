@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 public class StreetLayout implements Serializable {
     @Serial
-    private static final long serialVersionUID = -5L;
+    private static final long serialVersionUID = -7L;
     public LocalDateTime registrationDate;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

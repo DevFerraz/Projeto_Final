@@ -7,8 +7,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 
 @Getter
@@ -16,7 +15,7 @@ import java.util.UUID;
 @Entity
 public class Invoice implements Serializable {
     @Serial
-    private static final long serialVersionUID = -2L;
+    private static final long serialVersionUID = -3L;
     public LocalDateTime registrationDate;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
