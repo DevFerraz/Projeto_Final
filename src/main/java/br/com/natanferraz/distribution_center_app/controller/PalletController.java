@@ -42,6 +42,7 @@ public class PalletController {
         }
         Pallet pallet = new Pallet();
         BeanUtils.copyProperties(palletDto, pallet);
+        pallet.setStatus(PalletStatus.valueOf("VACANT"));
         log.info("Pallet created");
         return ResponseEntity.status(HttpStatus.CREATED).body(palletService.save(pallet));
 
@@ -131,7 +132,7 @@ public class PalletController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(error);
         }
-        if(!(pallet.getStatus() == PalletStatus.IN_USE && pallet.getProduct().getId()==productId)) {
+        if((pallet.getStatus() == PalletStatus.IN_USE && pallet.getProduct().getId()==productId)) {
             CustomError error = new CustomError(HttpStatus.BAD_REQUEST,
                     "Pallet filled with another product");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)

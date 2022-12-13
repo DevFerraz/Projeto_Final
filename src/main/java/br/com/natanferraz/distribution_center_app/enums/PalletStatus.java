@@ -1,9 +1,9 @@
 package br.com.natanferraz.distribution_center_app.enums;
 
 public enum PalletStatus {
-    NEW,
+    VACANT,
     IN_USE,
-    BROKED,
+    BROKE,
     ON_REPAIR,
     FULL
 }

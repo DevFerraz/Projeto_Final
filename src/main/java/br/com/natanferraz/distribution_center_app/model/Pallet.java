@@ -70,7 +70,7 @@ public class Pallet implements Serializable {
     }
 
     public Boolean isAvailable(){
-        return this.status == PalletStatus.NEW;
+        return this.status == PalletStatus.VACANT;
     }
 }
 
