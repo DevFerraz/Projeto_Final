@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import br.com.natanferraz.distribution_center_app.model.CustomError;
 import java.time.LocalDateTime;
@@ -21,11 +22,11 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/product", produces = "application/json")
 public class ProductController {
     @Autowired
     ProductService productService;
+
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody ProductDto productDto) {
@@ -127,6 +128,7 @@ public class ProductController {
 
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
+
 
     @PutMapping("/dispatch/{id}/{qty}")
     public ResponseEntity<Object> decrease(@PathVariable(value = "id") UUID id,

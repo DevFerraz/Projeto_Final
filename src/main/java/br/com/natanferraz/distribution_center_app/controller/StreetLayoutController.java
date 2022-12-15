@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,6 +40,8 @@ public class StreetLayoutController{
         return ResponseEntity.status(HttpStatus.CREATED).body(streetLayoutService
                 .save(streetLayout));
     }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> read(@PathVariable(value = "id") UUID id) {
         Optional<StreetLayout> streetLayoutOptional = streetLayoutService.findById(id);
@@ -53,6 +56,7 @@ public class StreetLayoutController{
         log.info("Street Layout found by id");
         return ResponseEntity.status(HttpStatus.OK).body(streetLayoutOptional.get());
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") UUID id,
@@ -73,10 +77,12 @@ public class StreetLayoutController{
         return ResponseEntity.status(HttpStatus.OK).body(streetLayoutService.save(streetLayout));
     }
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete() {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Street Layout Delete cannot be used");
     }
+
 
     @GetMapping()
     public ResponseEntity<Page<StreetLayout>> list(@PageableDefault(size = 5, sort = "id",
