@@ -51,8 +51,9 @@ public class Product implements Serializable {
     private String batch;
 
     @Column(nullable = false, length = 5)
-    private int quantity;
+    private Integer quantity;
     public LocalDateTime registrationDate;
+    public LocalDateTime lastUpdateDate;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
@@ -80,5 +81,13 @@ public class Product implements Serializable {
 
     public Product(){
         this.registrationDate = LocalDateTime.now(ZoneId.of("UTC"));
+    }
+
+    public void increaseQuantity(Integer qty) {
+        this.quantity += qty;
+    }
+
+    public void decreaseQuantity(Integer qty) {
+        this.quantity -= (qty);
     }
 }
