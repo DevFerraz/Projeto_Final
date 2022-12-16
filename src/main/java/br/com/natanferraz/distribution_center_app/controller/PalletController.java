@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -23,20 +24,20 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/pallet", produces = "application/json")
+@RequestMapping("/pallet")
 public class PalletController {
     @Autowired
     PalletService palletService;
     @Autowired
     ProductService productService;
 
-    @PostMapping(value = "/create", produces = "application/json")
+    @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody PalletDto palletDto) {
         if(palletService.existsByHeightAndAndWeightAndLengthAndWidth(palletDto.getHeight(), palletDto.getWeight(),
                 palletDto.getLength(), palletDto.getWidth())){
 
             CustomError error = new CustomError(HttpStatus.CONFLICT,
-                    "Conflict: This pallet's dimensions are already created");
+                    "Conflict: Pallet's dimensions already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(error);
         }
@@ -48,7 +49,7 @@ public class PalletController {
 
     }
 
-    @GetMapping(value = "/{id}", produces = "application/json")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> read(@PathVariable(value = "id") UUID id) {
         Optional<Pallet> palletOptional = palletService.findById(id);
         log.info("Pallet searched by id");
@@ -63,7 +64,7 @@ public class PalletController {
         return ResponseEntity.status(HttpStatus.OK).body(palletOptional.get());
     }
 
-    @PutMapping(value = "/{id}", produces = "application/json")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") UUID id,
                                          @RequestBody PalletDto palletDto) {
         Optional<Pallet> palletOptional = palletService.findById(id);
@@ -81,7 +82,7 @@ public class PalletController {
         return ResponseEntity.status(HttpStatus.OK).body(palletService.save(pallet));
     }
 
-    @DeleteMapping(value = "/{id}", produces = "application/json")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") UUID id) {
         Optional<Pallet> palletOptional = palletService.findById(id);
         log.info("Pallet searched by id");
@@ -106,8 +107,8 @@ public class PalletController {
         return ResponseEntity.status(HttpStatus.OK).body(palletService.findAll(pageable));
     }
 
-    @PutMapping(value = "/product-allocation/{palletId}/{productId}/{qty}",
-            produces = "application/json")
+
+    @PutMapping("/product-allocation/{palletId}/{productId}/{qty}")
     public ResponseEntity<Object> productAllocation(@PathVariable(value = "palletId") UUID palletId,
                                                     @PathVariable(value = "productId") UUID productId,
                                                     @PathVariable(value = "qty") Integer qty) {
@@ -133,7 +134,7 @@ public class PalletController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(error);
         }
-        if(!(pallet.getStatus() == PalletStatus.IN_USE && pallet.getProduct().getId()==productId)) {
+        if((pallet.getStatus() == PalletStatus.IN_USE && pallet.getProduct().getId()==productId)) {
             CustomError error = new CustomError(HttpStatus.BAD_REQUEST,
                     "Pallet filled with another product");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)

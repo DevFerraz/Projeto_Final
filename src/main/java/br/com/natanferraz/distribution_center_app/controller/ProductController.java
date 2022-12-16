@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import br.com.natanferraz.distribution_center_app.model.CustomError;
 import java.time.LocalDateTime;
@@ -21,13 +22,13 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/product", produces = "application/json")
 public class ProductController {
     @Autowired
     ProductService productService;
 
-    @PostMapping(value = "/create", produces = "application/json")
+
+    @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody ProductDto productDto) {
         if(productService.existsByBatch(productDto.getBatch())){
             CustomError error = new CustomError(HttpStatus.CONFLICT,
@@ -47,7 +48,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
 
-    @GetMapping(value = "/{id}", produces = "application/json")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> read(@PathVariable(value = "id") UUID id) {
         Optional<Product> productOptional = productService.findById(id);
         log.info("Product searched by id");
@@ -62,7 +63,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productOptional.get());
     }
 
-    @PutMapping(value = "/{id}", produces = "application/json")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") UUID id,
                                          @RequestBody ProductDto productDto) {
         Optional<Product> productOptional = productService.findById(id);
@@ -80,7 +81,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.save(product));
     }
 
-    @DeleteMapping(value = "/{id}", produces = "application/json")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") UUID id) {
         Optional<Product> productOptional = productService.findById(id);
         log.info("Product searched by id");
@@ -105,7 +106,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.findAll(pageable));
     }
 
-    @PutMapping(value = "/receive/{id}/{qty}", produces = "application/json")
+    @PutMapping("/receive/{id}/{qty}")
     public ResponseEntity<Object> receive(@PathVariable(value = "id") UUID id, @PathVariable(value = "qty") Integer qty) {
         Optional<Product> productOptional = productService.findById(id);
         if (qty <= 0) {
@@ -128,7 +129,8 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
-    @PutMapping(value = "/dispatch/{id}/{qty}", produces = "application/json")
+
+    @PutMapping("/dispatch/{id}/{qty}")
     public ResponseEntity<Object> decrease(@PathVariable(value = "id") UUID id,
                                            @PathVariable(value = "qty") Integer qty) {
         Optional<Product> productOptional = productService.findById(id);

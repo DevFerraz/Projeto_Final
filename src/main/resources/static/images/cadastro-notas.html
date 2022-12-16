@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home</title>
+        <link rel="shortcut icon" href="CD9.png" type="image/x-icon">
+        <!--Google Fonts - Zen Dots-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet"> 
+        <!-- CSS Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">        <!-- Icons Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+        <!--CSS Projeto-->
+        <link rel="stylesheet" href="css/style.css"> 
+        <!-- JavaScript Bootstrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </head>
+<body class="nota1">
+    <!--NAVBAR-->
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary-color" id="navbar">
+        <div class="container-fluid py-3">
+            <a href="home-login.html" class="navbar-brand primary-color">
+                <img src="CD9.png">
+                <span>iDistribution</span>
+            </a> 
+            <button class="navbar-toggler" type="button" 
+            data-bs-toggle="collapse"
+            data-bs-target="#navbar-items"
+            aria-controls="navbar-items"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            >
+                <i class="bi bi-list"></i>
+        </button>
+            <div class="collapse navbar-collapse" id="navbar-items">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a href="home-login.html" class="nav-link active primary-color f1">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="cadastro-pallets.html" class="nav-link primary-color f1 ">Cadastro de Pallets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link primary-color f1 ">Listagem do Estoque</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="cadastro-produto.html" class="nav-link primary-color f1 ">Cadastro de Produtos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="cadastro-funcionario.html" class="nav-link primary-color f1">Funcionários</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link primary-color f1">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container nota">
+        <form class="needs-validation">
+            <div class="form-group">
+                <div class="mb-3">
+                    <label for="number" class="form-label primeiraDescricao">Número da nota</label>
+                    <input type="number" class="form-control" id="number" placeholder="Número da nota" required>
+                  </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="mb-3">
+                    <label for="expeditionDate" class="form-label">Data de Expedição</label>
+                    <input type="date" class="form-control" id="expeditionDate" placeholder="Data de Expedição" required>
+                  </div>
+            </div>
+              
+            <div class="form-group">
+                <div class="mb-3">
+                    <label for="value" class="form-label">Valor da Nota</label>
+                    <input type="number" class="form-control" id="value" placeholder="Valor da Nota" required>
+                  </div>
+            </div>
+              
+            <div class="form-group">
+                <div class="mb-3">
+                    <label for="inscriptionProvider" class="form-label">CNPJ do Fornecedor</label>
+                    <input type="text" class="form-control" id="inscriptionProvider" placeholder="CNPJ do Fornecedor" required>
+                  </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="mb-3">
+                    <label for="providersFone" class="form-label">Telefone do Fornecedor</label>
+                    <input type="tel" class="form-control" id="providersFone" placeholder="Telefone do Fornecedor" required>
+                  </div>
+            </div>
+             
+            <div class="form-group">
+                <div class="mb-3">
+                    <label for="adressCompanyProvider" class="form-label">Endereço do Fornecedor</label>
+                    <input type="text" class="form-control" id="adressCompanyProvider" placeholder="Endereço do Fornecedor" required>
+                  </div>
+            </div>
+              
+            <div class="form-group">
+                <div class="mb-3">
+                    <label for="adressCompany" class="form-label">Endereço da Empresa</label>
+                    <input type="text" class="form-control" id="adressCompany" placeholder="Endereço da Empresa" required>
+                  </div>
+            </div>
+              
+            <div class="form-group">
+                <div class="mb-3">
+                    <label for="productBought" class="form-label">Produto Referido</label>
+                    <input type="text" class="form-control" id="productBought" placeholder="Produto Referido" required>
+                  </div>
+            </div>
+    
+            <div class="form-group">
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantidade do Produto</label>
+                    <input type="number" class="form-control" id="quantity" placeholder="Quantidade do Produto" required>
+                  </div>
+            </div>
+              
+              <div class="form-group text-center d1">
+                <input class="btn btn-success" type="submit" value="CADASTRAR">
+              </div>
+        </form>
+    </div>
+                <!--FOOTER-->
+    <footer class="container-fluid bg-dark-color" id="footer">
+        <div class="container">
+            <div class="row">
+                <!--FOOTER TOP-->
+                <div class="col-12" id="footer-top">
+                    <div class="row justify-content-between">
+                        <div class="col-4"><h2>iDistribution</h2></div>
+                        <div class="col-4" id="social-icons">
+                            <i class="bi bi-facebook"></i>
+                            <i class="bi bi-instagram"></i>
+                            <i class="bi bi-twitter"></i>
+                            <i class="bi bi-linkedin"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!--FOOTER DETAILS-->
+                <div id="footer-details">
+                    <div class="row">
+                        <div class="col" id="news-container">
+                            <h4>Atualizações</h4>
+                            <p class="secondary-color">Inscreva-se para saber mais</p>
+                            <form>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control"
+                                    placeholder="Digite seu e-mail">
+                                </div>
+                                <button class="btn btn-dark" 
+                                type="submit">Enviar</button>
+                            </form>
+                        </div>
+                        <div class="col" id="contact-container">
+                            <h4 class="unstyled">Formas de contato</h4>
+                            <p class="secondary-color list-unstyled">(32) 9 9999-9999</p>
+                            <p class="secondary-color list-unstyled">contato@idistribution.com.br</p>
+                        </div>
+                        <div class="col" id="links-container">
+                            <div class="row">
+                                <h4 class="unstyled">Páginas importantes</h4>
+                                <div class="col-12">
+                                    <ul class="list-unstyled">
+                                        <li><a href="#" class="secondary-color">Projetos</a></li>
+                                        <li><a href="#" class="secondary-color">Planejamentos</a></li>
+                                        <li><a href="#" class="secondary-color">Orçamentos</a></li>
+                                        <li><a href="#" class="secondary-color">Efetividade</a></li>
+                                        <li><a href="#" class="secondary-color">Produção</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--FOOTER BOTTOM-->
+                <div class="col-12" id="footer-bottom">
+                    <div class="row justify-content-between">
+                        <div class="col-12 col-md-3">
+                            <p class="secondary-color">iDistribution &copy; 2022</p>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <p class="secondary-color">Organizando a distribuição do seu negócio</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>     
+   
+</body>
+</html> 
