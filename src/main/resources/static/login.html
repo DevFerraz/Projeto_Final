@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home</title>
+        <link rel="shortcut icon" href="images/rede-global(1).png" type="image/x-icon">
+        <!--Google Fonts - Zen Dots-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet"> 
+        <!-- CSS Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">        <!-- Icons Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+        <!--CSS Projeto-->
+        <link rel="stylesheet" href="css/style.css"> 
+        <!-- JavaScript Bootstrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </head>
+        <!--NAVBAR-->
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary-color" id="navbar">
+        <div class="container-fluid py-3">
+            <a href="index.html" class="navbar-brand primary-color">
+                <img src="images/rede-global(1)_resized.png">
+                <span>iDistribution</span>
+            </a> 
+            <button class="navbar-toggler" type="button" 
+            data-bs-toggle="collapse"
+            data-bs-target="#navbar-items"
+            aria-controls="navbar-items"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            >
+                <i class="bi bi-list"></i>
+        </button>
+            <div class="collapse navbar-collapse" id="navbar-items">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item collapse navbar-collapse justify-content-end">
+                        <a href="index.html" class="nav-link primary-color" aria-current="page">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <body class="form">
+    
+        <div class="login">
+            <h1 class="text-center">Bem-vindo!</h1>
+
+            <form class="needs-validation">
+                
+                <div class="form-group">
+                    <label class="form-label" for="email">Digite seu email</label>
+                    <input class="form-control" type="email" id="email" required>
+                    <div class="invalid-feedback">
+                        Favor digitar um e-mail válido
+                    </div>
+                </div>
+               
+                <div class="form-group">
+                    <label class="form-label" for="password">Digite sua senha</label>
+                    <input class="form-control" type="password" id="password" required>
+                    <div class="invalid-feedback">
+                        Favor digitar uma senha válida
+                    </div>
+                </div>
+
+                <div class="form-group form-check">
+                    <input class="form-check-input" type="checkbox" id="check">
+                    <label class="form-check-label" for="check">Lembrar de mim</label>
+                </div>
+
+                <input class="btn btn-success w-100" type="submit" value="ENTRAR">
+            </form>
+        </div>
+    
+    </body>
+
+
+    </html>

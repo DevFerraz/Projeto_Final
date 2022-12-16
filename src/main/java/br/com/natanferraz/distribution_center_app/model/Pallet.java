@@ -3,7 +3,6 @@ package br.com.natanferraz.distribution_center_app.model;
 import br.com.natanferraz.distribution_center_app.enums.PalletStatus;
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -36,6 +35,8 @@ public class Pallet implements Serializable {
     private double height;
     @Column(nullable = false)
     private double weight;
+    @Column(nullable = false)
+    private Integer quantity;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "street_layout_id")
@@ -71,6 +72,18 @@ public class Pallet implements Serializable {
 
     public Boolean isAvailable(){
         return this.status == PalletStatus.VACANT;
+    }
+    public Boolean isProductContained(){
+        return this.status == PalletStatus.IN_USE;
+    }
+    public Boolean isBroken(){
+        return this.status == PalletStatus.BROKE;
+    }
+    public Boolean isOnRepair(){
+        return this.status == PalletStatus.ON_REPAIR;
+    }
+    public Boolean isFull(){
+        return this.status == PalletStatus.FULL;
     }
 }
 

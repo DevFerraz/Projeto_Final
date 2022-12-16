@@ -7,8 +7,10 @@ import java.util.Optional;
 @Repository
 
 public interface UserRepository extends JpaRepository<User, String> {
-    @Override
-    boolean existsById(String username);
-
     Optional<User> findByUsername(String username);
+
+   Optional<User> findByPhoneNumber(String phoneNumber);
+
+    Boolean existsByName(String name);
+    Optional<User> findByName(String name);
 }

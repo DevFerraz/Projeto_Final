@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -105,6 +106,7 @@ public class PalletController {
         log.info("Pallet list showed");
         return ResponseEntity.status(HttpStatus.OK).body(palletService.findAll(pageable));
     }
+
 
     @PutMapping("/product-allocation/{palletId}/{productId}/{qty}")
     public ResponseEntity<Object> productAllocation(@PathVariable(value = "palletId") UUID palletId,

@@ -1,6 +1,6 @@
 package br.com.natanferraz.distribution_center_app.service;
 
-import br.com.natanferraz.distribution_center_app.model.User;
+import br.com.natanferraz.distribution_center_app.model.UserModel;
 import br.com.natanferraz.distribution_center_app.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +17,33 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
     @Transactional
-    public User save(User user){
-        User savedUser = userRepository.save(user);
+    public UserModel save(UserModel userModel){
+        UserModel savedUserModel = userRepository.save(userModel);
         log.info("Invoice created");
-        return savedUser;
+        return savedUserModel;
     }
     @Transactional
-    public void delete(User user){
-        userRepository.delete(user);
-        log.info("User deleted", user);
+    public void delete(UserModel userModel){
+        userRepository.delete(userModel);
+        log.info("User deleted", userModel);
     }
-    public Page<User> findAll(Pageable pageable) {
+    public Page<UserModel> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
     public boolean existsByUsername(String username) {
         return userRepository.existsById(username);
     }
 
-    public Optional<User> findByUsername(String username) {
+    public Optional<UserModel> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public Optional<User> findByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber);
+    }
+
+    public Optional<User> findByName(String name) {
+        return userRepository.findByName(name);
     }
 }
 
