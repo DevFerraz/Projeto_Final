@@ -27,7 +27,7 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-    @PostMapping("/create")
+    @PostMapping(value = "/create", produces = "application/json")
     public ResponseEntity<Object> create(@RequestBody ProductDto productDto) {
         if(productService.existsByBatch(productDto.getBatch())){
             CustomError error = new CustomError(HttpStatus.CONFLICT,
@@ -47,7 +47,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Object> read(@PathVariable(value = "id") UUID id) {
         Optional<Product> productOptional = productService.findById(id);
         log.info("Product searched by id");
@@ -62,7 +62,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productOptional.get());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Object> update(@PathVariable(value = "id") UUID id,
                                          @RequestBody ProductDto productDto) {
         Optional<Product> productOptional = productService.findById(id);
@@ -80,7 +80,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.save(product));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") UUID id) {
         Optional<Product> productOptional = productService.findById(id);
         log.info("Product searched by id");
@@ -105,7 +105,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.findAll(pageable));
     }
 
-    @PutMapping("/receive/{id}/{qty}")
+    @PutMapping(value = "/receive/{id}/{qty}", produces = "application/json")
     public ResponseEntity<Object> receive(@PathVariable(value = "id") UUID id, @PathVariable(value = "qty") Integer qty) {
         Optional<Product> productOptional = productService.findById(id);
         if (qty <= 0) {
@@ -128,7 +128,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
-    @PutMapping("/dispatch/{id}/{qty}")
+    @PutMapping(value = "/dispatch/{id}/{qty}", produces = "application/json")
     public ResponseEntity<Object> decrease(@PathVariable(value = "id") UUID id,
                                            @PathVariable(value = "qty") Integer qty) {
         Optional<Product> productOptional = productService.findById(id);

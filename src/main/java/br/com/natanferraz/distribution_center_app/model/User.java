@@ -9,6 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.text.DecimalFormat;
 
 @Entity
 @Getter
@@ -36,17 +37,11 @@ public class User implements Serializable {
     private String phoneNumber;
 
     @Column(nullable = false)
-    private double salary;
+    private Double salary;
 
     public User(){
         this.registrationDate = LocalDateTime.now(ZoneId.of("UTC"));
     }
-
-
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return null;
-//    }
 
 
     @Override

@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("/streetlayout")
+@RequestMapping(value = "/street-layout", produces = "application/json")
 public class StreetLayoutController{
     @Autowired
     StreetLayoutService streetLayoutService;
@@ -39,7 +39,7 @@ public class StreetLayoutController{
         return ResponseEntity.status(HttpStatus.CREATED).body(streetLayoutService
                 .save(streetLayout));
     }
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Object> read(@PathVariable(value = "id") UUID id) {
         Optional<StreetLayout> streetLayoutOptional = streetLayoutService.findById(id);
         log.info("Street Layout searched by id");
@@ -54,7 +54,7 @@ public class StreetLayoutController{
         return ResponseEntity.status(HttpStatus.OK).body(streetLayoutOptional.get());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Object> update(@PathVariable(value = "id") UUID id,
                                          @RequestBody StreetLayoutDto streetLayoutDto) {
         Optional<StreetLayout> streetLayoutOptional = streetLayoutService.findById(id);
@@ -73,8 +73,8 @@ public class StreetLayoutController{
         return ResponseEntity.status(HttpStatus.OK).body(streetLayoutService.save(streetLayout));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete() {
+    @DeleteMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<Object> delete(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Street Layout Delete cannot be used");
     }
 

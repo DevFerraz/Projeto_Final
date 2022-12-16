@@ -22,17 +22,26 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/user")
+@RequestMapping(value = "/user", produces = "application/json")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    //    @PreAuthorize("hasAnyRole('DIRECTOR', 'ADMIN')")
-    @PostMapping("/create")
+    @PostMapping(value="/create", produces = "application/json")
     public ResponseEntity<Object> create(@RequestBody UserDto userDto) {
         if (userService.existsByUsername(userDto.getUsername())) {
             CustomError error = new CustomError( HttpStatus.CONFLICT,
+                    "Conflict: Username already created");
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(error);
+        }else if (userService.findByName(userDto.getName()).isPresent()) {
+            CustomError error = new CustomError( HttpStatus.CONFLICT,
                     "Conflict: User already created");
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(error);
+        }else if (userService.findByPhoneNumber(userDto.getPhoneNumber()).isPresent()) {
+            CustomError error = new CustomError( HttpStatus.CONFLICT,
+                    "Conflict: Phone Number already created");
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(error);
         }
@@ -45,9 +54,7 @@ public class UserController {
                 .body(userService
                         .save(user));
     }
-
-    //    @PreAuthorize("hasAnyRole('EMPLOYEE', 'DIRECTOR', 'ADMIN')")
-    @GetMapping("/{username}")
+    @GetMapping(value="/{username}", produces = "application/json")
     public ResponseEntity<Object> read(@PathVariable(value = "username") String username) {
         Optional<User> userOptional = userService.findByUsername(username);
         log.info("User searched by id");
@@ -61,8 +68,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userOptional.get());
     }
 
-    //    @PreAuthorize("hasAnyRole('DIRECTOR', 'ADMIN')")
-    @PutMapping("/{username}")
+    @PutMapping(value="/{username}", produces = "application/json")
     public ResponseEntity<Object> update(@PathVariable(value = "username") String username,
                                          @RequestBody UserDto userDto) {
         userDto.setUsername(username);
@@ -78,8 +84,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
     }
 
-    //    @PreAuthorize("hasAnyRole('DIRECTOR', 'ADMIN')")
-    @DeleteMapping("/{username}")
+    @DeleteMapping(value="/{username}", produces = "application/json")
     public ResponseEntity<Object> delete(@PathVariable(value = "username")String username) {
         Optional<User> userOptional = userService.findByUsername(username);
         log.info("User searched by id");
@@ -96,7 +101,6 @@ public class UserController {
                 .body(error);
     }
 
-    //    @PreAuthorize("hasAnyRole('EMPLOYEE', 'DIRECTOR', 'ADMIN')")
     @GetMapping()
     public ResponseEntity<Page<User>> list(@PageableDefault(size = 5, sort = "registrationDate",
             direction = Sort.Direction.ASC) Pageable pageable) {
